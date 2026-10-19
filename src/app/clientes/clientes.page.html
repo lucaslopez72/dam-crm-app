@@ -1,0 +1,166 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Gestión de clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="contenedor">
+
+    <ion-button fill="outline" (click)="volver()">
+      Volver al inicio
+    </ion-button>
+
+    <h1>Clientes registrados</h1>
+
+    @if (!currentUser()) {
+      <ion-card>
+        <ion-card-content>
+          <p>
+            Inicia sesión para consultar y gestionar
+            los clientes.
+          </p>
+
+          <ion-button expand="block" (click)="irLogin()">
+            Iniciar sesión
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    }
+
+    @if (currentUser() && userRole() === 'admin') {
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title>
+            {{ editandoId ? 'Editar cliente' : 'Nuevo cliente' }}
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content>
+          <form
+            [formGroup]="formulario"
+            (ngSubmit)="guardarCliente()">
+
+            <ion-item>
+              <ion-input
+                label="Nombre"
+                labelPlacement="stacked"
+                formControlName="nombre"
+                type="text">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input
+                label="Empresa"
+                labelPlacement="stacked"
+                formControlName="empresa"
+                type="text">
+              </ion-input>
+            </ion-item>
+
+            <ion-item>
+              <ion-input
+                label="Correo electrónico"
+                labelPlacement="stacked"
+                formControlName="email"
+                type="email">
+              </ion-input>
+            </ion-item>
+
+            <ion-button
+              expand="block"
+              type="submit"
+              [disabled]="formulario.invalid || guardando">
+
+              {{ editandoId ? 'Actualizar cliente' : 'Guardar cliente' }}
+
+            </ion-button>
+
+            @if (editandoId) {
+              <ion-button
+                expand="block"
+                color="medium"
+                fill="outline"
+                type="button"
+                (click)="cancelarEdicion()">
+                Cancelar
+              </ion-button>
+            }
+          </form>
+        </ion-card-content>
+      </ion-card>
+    }
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+    @if (mensaje) {
+      <p class="mensaje">{{ mensaje }}</p>
+    }
+
+    @if (currentUser()) {
+
+      @if (cargando) {
+        <div class="centro">
+          <ion-spinner></ion-spinner>
+          <p>Cargando clientes...</p>
+        </div>
+      } @else {
+
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>
+              Listado de clientes
+            </ion-card-title>
+          </ion-card-header>
+
+          <ion-card-content>
+            <ion-list>
+
+              @for (cliente of clientes; track cliente.id) {
+                <ion-item>
+                  <ion-label>
+                    <h2>{{ cliente.nombre }}</h2>
+                    <p>{{ cliente.empresa }}</p>
+                    <p>{{ cliente.email }}</p>
+
+                    @if (userRole() === 'admin') {
+                      <div class="acciones">
+                        <ion-button
+                          size="small"
+                          (click)="editarCliente(cliente)">
+                          Editar
+                        </ion-button>
+
+                        <ion-button
+                          size="small"
+                          color="danger"
+                          (click)="eliminarCliente(cliente)">
+                          Eliminar
+                        </ion-button>
+                      </div>
+                    }
+                  </ion-label>
+                </ion-item>
+              } @empty {
+                <ion-item>
+                  <ion-label>
+                    No hay clientes registrados.
+                  </ion-label>
+                </ion-item>
+              }
+
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+      }
+    }
+
+  </div>
+
+</ion-content>

@@ -1,0 +1,53 @@
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Galería de empresas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="contenedor">
+
+    <ion-button fill="outline" (click)="volver()">
+      Volver al inicio
+    </ion-button>
+
+    <h1>Nuestra galería</h1>
+    <p>Imágenes almacenadas en Supabase Storage</p>
+
+    @if (cargando) {
+      <div class="centro">
+        <ion-spinner></ion-spinner>
+        <p>Cargando imágenes...</p>
+      </div>
+    } @else if (error) {
+      <p class="error">{{ error }}</p>
+    } @else if (imagenes.length === 0) {
+      <p>No se encontraron imágenes.</p>
+    } @else {
+      <div class="grid-imagenes">
+        @for (imagen of imagenes; track imagen.name) {
+          <ion-card>
+            <ion-img
+              [src]="imagen.url"
+              [alt]="imagen.name">
+            </ion-img>
+
+            <ion-card-header>
+              <ion-card-title>
+              {{ imagen.name.replace('.png', '').replace('.jpg', '').replace('.jpeg', '') }}
+              </ion-card-title>
+            </ion-card-header>
+
+            <ion-card-content>
+              Imagen obtenida desde Supabase Storage
+            </ion-card-content>
+          </ion-card>
+        }
+      </div>
+    }
+
+  </div>
+
+</ion-content>

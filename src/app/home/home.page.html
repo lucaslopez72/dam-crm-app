@@ -1,20 +1,106 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>DAM CRM</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div class="home-container">
+
+    <h1>Bienvenido a DAM CRM</h1>
+
+    <p>
+      Plataforma de gestión de clientes
+      conectada con Supabase.
+    </p>
+
+    <!-- GESTIÓN DE CLIENTES -->
+    <ion-card>
+
+      <ion-card-header>
+        <ion-card-title>
+          Gestión de clientes
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <p>
+          Consulta y administra los clientes
+          registrados en la base de datos.
+        </p>
+
+        <!-- USUARIO SIN INICIAR SESIÓN -->
+        @if (!currentUser()) {
+
+          <ion-button
+            expand="block"
+            (click)="irLogin()">
+            Iniciar sesión
+          </ion-button>
+
+        } @else {
+
+          <!-- USUARIO AUTENTICADO -->
+          <p>
+            Sesión iniciada:
+            <strong>{{ currentUser()?.email }}</strong>
+          </p>
+
+          <p>
+            Rol:
+            <strong>{{ userRole() || 'Cargando...' }}</strong>
+          </p>
+
+          <!-- ACCESO AL CRUD -->
+          <ion-button
+            expand="block"
+            color="success"
+            (click)="irClientes()">
+            Gestionar clientes
+          </ion-button>
+
+          <!-- CERRAR SESIÓN -->
+          <ion-button
+            expand="block"
+            color="medium"
+            (click)="cerrarSesion()">
+            Cerrar sesión
+          </ion-button>
+
+        }
+
+      </ion-card-content>
+    </ion-card>
+
+    <!-- GALERÍA DE IMÁGENES -->
+    <ion-card>
+
+      <ion-card-header>
+        <ion-card-title>
+          Galería de imágenes
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <p>
+          Visualiza las imágenes empresariales
+          almacenadas en Supabase Storage.
+        </p>
+
+        <ion-button
+          expand="block"
+          color="secondary"
+          (click)="irGaleria()">
+          Ver galería
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+
   </div>
+
 </ion-content>

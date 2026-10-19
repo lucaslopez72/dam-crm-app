@@ -1,0 +1,58 @@
+
+<ion-content class="ion-padding">
+  <div class="login-container">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>
+          DAM CRM
+        </ion-card-title>
+        <p>Gestión de clientes con Supabase</p>
+      </ion-card-header>
+
+      <ion-card-content>
+        <form (ngSubmit)="iniciarSesion()">
+
+          <ion-item>
+            <ion-input
+              label="Correo electrónico"
+              labelPlacement="stacked"
+              type="email"
+              name="email"
+              [(ngModel)]="email"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Contraseña"
+              labelPlacement="stacked"
+              type="password"
+              name="password"
+              [(ngModel)]="password"
+              required>
+            </ion-input>
+          </ion-item>
+
+          <ion-button
+            expand="block"
+            type="submit"
+            [disabled]="loading">
+            @if (loading) {
+              <ion-spinner name="crescent"></ion-spinner>
+            } @else {
+              Iniciar sesión
+            }
+          </ion-button>
+
+          @if (errorMessage) {
+            <ion-text color="danger">
+              <p>{{ errorMessage }}</p>
+            </ion-text>
+          }
+
+        </form>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
